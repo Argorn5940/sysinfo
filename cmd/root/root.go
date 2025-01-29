@@ -4,20 +4,78 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/Argorn5940/sysinfo/cmd/collector"
 	"github.com/spf13/cobra"
 )
 
 var rootCmd = &cobra.Command{
 	Use:   "sysinfo",
-	Short: " A system information coolection tool",
-} // 修正: rootCmdを定義
-func init() {
-	rootCmd.AddCommand(newVersionCmd())
+	Short: "システム情報を表示するCLIツール",
+	Long: `sysinfoは、システムの様々な情報（cpu、メモリ、ディスク、ネットワークを
+	収集して表示するCLIツールです。`,
+	Run: func(cmd *cobra.Command, args []string) {
+		//デフォルトの動作（すべての情報を表示）
+		collector.ShowAllInfo()
+	},
 }
 
 func Execute() {
 	if err := rootCmd.Execute(); err != nil {
-		fmt.Println(err)
+		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
+}
+
+func init() {
+	//サブコマンドの追加
+	rootCmd.AddCommand(newVersionCmd())
+	rootCmd.AddCommand(cpuCmd)
+	rootCmd.AddCommand(memoryCmd)
+	rootCmd.AddCommand(diskCmd)
+	rootCmd.AddCommand(networkCmd)
+}
+
+// bバージョン情報用のコマンド
+var versionCmd = &cobra.Command{
+	Use:   "version",
+	Short: "バージョン情報を表示",
+	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Println("sysinfo v1.0.0")
+	},
+}
+
+// cPU情報用のコマンド
+var cpuCmd = &cobra.Command{
+	Use:   "cpu",
+	Short: "CPU情報を表示",
+	Run: func(cmd *cobra.Command, args []string) {
+		collector.ShowCPUInfo()
+	},
+}
+
+// メモリ情報用のコマンド
+var memoryCmd = &cobra.Command{
+	Use:   "memory",
+	Short: "メモリ情報を表示",
+	Run: func(cmd *cobra.Command, args []string) {
+		collector.ShowMemoryInfo()
+	},
+}
+
+// ディスク情報用のコマンド
+var diskCmd = &cobra.Command{
+	Use:   "disk",
+	Short: "ディスク情報を表示",
+	Run: func(cmd *cobra.Command, args []string) {
+		collector.ShowDiskInfo()
+	},
+}
+
+// ネットワーク情報用のコマンド
+var networkCmd = &cobra.Command{
+	Use:   "network",
+	Short: "ネットワーク情報を表示",
+	Run: func(cmd *cobra.Command, args []string) {
+		collector.ShowNetworkInfo()
+	},
 }
