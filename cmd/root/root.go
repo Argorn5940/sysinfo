@@ -33,6 +33,7 @@ func init() {
 	rootCmd.AddCommand(memoryCmd)
 	rootCmd.AddCommand(diskCmd)
 	rootCmd.AddCommand(networkCmd)
+	rootCmd.AddCommand(allCmd)
 }
 
 // bバージョン情報用のコマンド
@@ -77,5 +78,14 @@ var networkCmd = &cobra.Command{
 	Short: "ネットワーク情報を表示",
 	Run: func(cmd *cobra.Command, args []string) {
 		collector.ShowNetworkInfo()
+	},
+}
+
+// 全ての情報を収集するコマンド
+var allCmd = &cobra.Command{
+	Use:   "all",
+	Short: "全ての情報を収集",
+	Run: func(cmd *cobra.Command, args []string) {
+		collector.ShowAllInfo()
 	},
 }
