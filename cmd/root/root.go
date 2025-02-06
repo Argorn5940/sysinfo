@@ -8,7 +8,8 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var rootCmd = &cobra.Command{
+// RootCmdをエクスポート（大文字で始める）
+var RootCmd = &cobra.Command{
 	Use:   "sysinfo",
 	Short: "システム情報を表示するCLIツール",
 	Long: `sysinfoは、システムの様々な情報（cpu、メモリ、ディスク、ネットワークを
@@ -20,7 +21,7 @@ var rootCmd = &cobra.Command{
 }
 
 func Execute() {
-	if err := rootCmd.Execute(); err != nil {
+	if err := RootCmd.Execute(); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
@@ -28,12 +29,12 @@ func Execute() {
 
 func init() {
 	//サブコマンドの追加
-	rootCmd.AddCommand(newVersionCmd())
-	rootCmd.AddCommand(cpuCmd)
-	rootCmd.AddCommand(memoryCmd)
-	rootCmd.AddCommand(diskCmd)
-	rootCmd.AddCommand(networkCmd)
-	rootCmd.AddCommand(allCmd)
+	RootCmd.AddCommand(newVersionCmd())
+	RootCmd.AddCommand(cpuCmd)
+	RootCmd.AddCommand(memoryCmd)
+	RootCmd.AddCommand(diskCmd)
+	RootCmd.AddCommand(networkCmd)
+	RootCmd.AddCommand(allCmd)
 }
 
 // bバージョン情報用のコマンド
